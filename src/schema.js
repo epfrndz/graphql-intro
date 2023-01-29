@@ -1,4 +1,5 @@
 import { gql } from "apollo-server-express"
+import { find } from "lodash"
 
 const contactsArray = [
   {
@@ -26,13 +27,17 @@ const typeDefs = gql`
   }
 
   type Query {
+    contact(id: String!): Contact 
     contacts: [Contact]
   }
 `
 
 const resolvers = {
   Query: {
-    contacts: () => contactsArray
+    contacts: () => contactsArray,
+    contact: (root, args) => {
+      return find(contactsArray, {id: args.id})
+    }
   }
 }
 
