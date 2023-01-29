@@ -1,5 +1,5 @@
 import { gql } from "apollo-server-express"
-import { find } from "lodash"
+import { find, remove } from "lodash"
 
 const contactsArray = [
   {
@@ -33,6 +33,8 @@ const typeDefs = gql`
 
   type Mutation {
     addContact(id: String!, firstName: String!, lastName: String!): Contact
+    updateContact(id: String!, firstName: String, lastName: String): Contact
+    deleteContact(id: String!): Contact
   }
 `
 
@@ -52,6 +54,25 @@ const resolvers = {
       }
       contactsArray.push(newContact)
       return newContact
+    },
+    updateContact: (root, args) => {
+      const contact = find(contactsArray, {id: args.id})
+      if (!contact) throw new Error(`Couldn't find contact with id ${args.id}`)
+
+      contact.firstName = args.firstName || contact.firstName
+      contact.lastName = args.lastName || contact.lastName
+
+      return contact
+    },
+    deleteContact: (root, args) => {
+      const removedContact = find(contactsArray, {id: args.id})
+
+      if (!removedContact) throw new Error(`Couldn't find contact with id ${args.id}`)
+      remove(contactsArray, c => {
+        return c.id === removedContact.id
+      })
+
+      return removedContact
     }
   }
 }
