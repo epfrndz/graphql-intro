@@ -1,4 +1,6 @@
-const contacts = [
+import { gql } from "apollo-server-express"
+
+const contactsArray = [
   {
     id: '1',
     firstName: 'Paul',
@@ -15,3 +17,23 @@ const contacts = [
     lastName: 'Jobs'
   }
 ]
+
+const typeDef = gql`
+  type Contact {
+    id: String!
+    firstName: String
+    lastName: String
+  }
+
+  type Query {
+    contacts: [Contact]
+  }
+`
+
+const resolvers = {
+  Query: {
+    contacts: () => contactsArray
+  }
+}
+
+export { typeDef, resolvers }
