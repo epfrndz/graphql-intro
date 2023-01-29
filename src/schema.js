@@ -56,11 +56,14 @@ const resolvers = {
       return newContact
     },
     updateContact: (root, args) => {
-      const contact = find(contactsArray, {id: args.id})
+      let contact = find(contactsArray, {id: args.id})
       if (!contact) throw new Error(`Couldn't find contact with id ${args.id}`)
 
       contact.firstName = args.firstName || contact.firstName
       contact.lastName = args.lastName || contact.lastName
+
+      // ⬇️ this doesn't work
+      // contact = {...contact, ...args}
 
       return contact
     },
