@@ -18,7 +18,7 @@ const contactsArray = [
   }
 ]
 
-const typeDef = gql`
+const typeDefs = gql`
   type Contact {
     id: String!
     firstName: String
@@ -36,4 +36,4 @@ const resolvers = {
   }
 }
 
-export { typeDef, resolvers }
+export { typeDefs, resolvers }
