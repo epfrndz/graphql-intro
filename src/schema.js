@@ -30,6 +30,10 @@ const typeDefs = gql`
     contact(id: String!): Contact 
     contacts: [Contact]
   }
+
+  type Mutation {
+    addContact(id: String!, firstName: String!, lastName: String!): Contact
+  }
 `
 
 const resolvers = {
@@ -37,6 +41,17 @@ const resolvers = {
     contacts: () => contactsArray,
     contact: (root, args) => {
       return find(contactsArray, {id: args.id})
+    }
+  },
+  Mutation: {
+    addContact: (root, args) => {
+      const newContact = {
+        id: args.id,
+        firstName: args.firstName,
+        lastName: args.lastName
+      }
+      contactsArray.push(newContact)
+      return newContact
     }
   }
 }
